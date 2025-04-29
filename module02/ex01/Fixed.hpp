@@ -3,11 +3,13 @@
 
 #include    <iostream>
 
+#define BIT 8;
+
 class Fixed
 {
     private:
     int _valeur;
-    const static int _bit = 8;
+    const static int _bit = BIT;
 
     public:
     Fixed();

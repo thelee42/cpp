@@ -39,7 +39,6 @@ int Fixed::getRawBits() const
     return _valeur;
 }
 
-
 void Fixed::setRawbits(int const raw)
 {
     std::cout << "setRawBits member function called" << std::endl;
@@ -48,7 +47,7 @@ void Fixed::setRawbits(int const raw)
 
 float Fixed::toFloat() const
 {
-    return (static_cast<float>(_valeur) / (1 << _bit));
+    return (static_cast<float>(_valeur) / static_cast<float>(1 << _bit));
 }
 
 int Fixed::toInt() const
