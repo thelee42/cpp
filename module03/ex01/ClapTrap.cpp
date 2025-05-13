@@ -1,8 +1,9 @@
 #include    "ClapTrap.hpp"
 #include    <iostream>
 
-
-ClapTrap::ClapTrap() : Name("noName"), Hit(10), Energy(10), Attack(0) {}
+ClapTrap::ClapTrap() : Name("noName"), Hit(10), Energy(10), Attack(0) {
+    std::cout << "ClapTrap " << Name << " is constructed" << std::endl;
+}
 
 ClapTrap::ClapTrap(std::string name) : Name(name), Hit(10), Energy(10), Attack(0) {
     std::cout << "ClapTrap " << Name << " is ready to attack" << std::endl;
@@ -65,4 +66,3 @@ void ClapTrap::beRepaired(unsigned int amount)
     std::cout << "ClapTrap " << Name << " has been repaired by " << amount 
             << ". Current HP : " << Hit << std::endl;
 }
-

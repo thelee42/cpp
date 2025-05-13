@@ -1,8 +1,9 @@
 #include    "ClapTrap.hpp"
 #include    <iostream>
 
-
-ClapTrap::ClapTrap() : Name("noName"), Hit(10), Energy(10), Attack(0) {}
+ClapTrap::ClapTrap() : Name("noName"), Hit(10), Energy(10), Attack(0) {
+    std::cout << "ClapTrap " << Name << " is constructed" << std::endl;
+}
 
 ClapTrap::ClapTrap(std::string name) : Name(name), Hit(10), Energy(10), Attack(0) {
     std::cout << "ClapTrap " << Name << " is ready to attack" << std::endl;
