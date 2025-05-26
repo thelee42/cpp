@@ -52,6 +52,7 @@
         "vector": "cpp",
         "algorithm": "cpp",
         "iomanip": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "ice.hpp": "c"
     }
 }
