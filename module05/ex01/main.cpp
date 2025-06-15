@@ -1,17 +1,21 @@
-#include "Bureaucrat.hpp"
-#include    "Form.hpp"
 #include <iostream>
+#include "Form.hpp"
+#include "Bureaucrat.hpp"
 
 int main() {
-    try {
-        Bureaucrat bob("Bob", 50);
-        Form taxForm("Tax Form", 45, 10);
+    Bureaucrat bob("Bob", 50);
+    Form taxForm("Tax Form", 45, 10);
 
-        bob.signForm(taxForm);  // 실패 (grade 50 > 45)
-        Bureaucrat alice("Alice", 40);
-        alice.signForm(taxForm); // 성공 (grade 40 <= 45)
-    } catch (std::exception& e) {
-        std::cout << "Exception caught in main: " << e.what() << std::endl;
-    }
+    std::cout << bob;
+    std::cout << taxForm;
+
+    bob.signForm(taxForm);  // cannot sign: Bob grade 50 > 45
+
+    Bureaucrat alice("Alice", 40);
+    std::cout << alice;
+    alice.signForm(taxForm); // can sign: Alice grade 40 < 45
+
+    std::cout << taxForm;
+
     return 0;
 }

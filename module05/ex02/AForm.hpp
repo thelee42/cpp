@@ -12,6 +12,7 @@ class AForm
         bool    sign;
         const int gradeToSign;
         const int gradeToExec;
+        AForm();
     protected:
         virtual void executeAction() const = 0;
     public:

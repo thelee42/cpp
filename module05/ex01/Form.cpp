@@ -44,8 +44,8 @@ bool Form::getSignStatus() const {
 }
 
 std::ostream& operator<<(std::ostream& out, const Form& form) {
-    out << form.getName() << ", form\n" << "grade to sign : " << form.getGradeToSign()
-        << "\ngrade to execute : " << form.getGradeToExec();
+    out << "Form name : " << form.getName() << "\nGrade to sign : " << form.getGradeToSign()
+        << "\nGrade to execute : " << form.getGradeToExec();
     if (form.getSignStatus())
         out <<  "\nThis form is signed\n";
     else
