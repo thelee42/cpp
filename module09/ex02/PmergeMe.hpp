@@ -30,6 +30,23 @@ struct indPair
     }
 };
 
+// #version 2
+// struct pairs
+// {
+//     int valeur;
+//     std::vector<pairs*> loser;
+
+//     pairs(int v) : valeur(v){}
+//     ~pairs() {}
+//     void add_loser(pairs *l) {
+//         loser.push_back(l);
+//     }
+//     bool operator<(const pairs &other) const {
+//         //comp++;
+//         return valeur < other.valeur;
+//     }
+// };
+
 class PmergeMe
 {
     public:

@@ -26,24 +26,6 @@ struct pairs
     }
 };
 
-struct indPair
-{
-    int value;
-    std::vector<int> pair_index;
-    indPair(int v) : value(v) {}
-    indPair(int v, int p_ind) : value(v) {
-        pair_index.push_back(p_ind);
-    }
-    bool operator<(const indPair &other) const {
-        return value < other.value;
-    }
-    int get_pair_index() const {
-        if (pair_index.empty())
-            return -1;
-        return pair_index.back();
-    }
-};
-
 
 class PmergeMe
 {
