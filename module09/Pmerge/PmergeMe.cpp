@@ -37,14 +37,6 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other)
     return *this;
 }
 
-struct ComparePairs {
-    bool operator()(const pairs* a, const pairs* b) const {
-        //comp++;
-        return a->valeur < b->valeur;
-    }
-};
-
-
 void PmergeMe::printVec() const
 {
     if (vec.empty())
@@ -73,16 +65,6 @@ void PmergeMe::printDeq() const
     std::cout << std::endl;
 }
 
-template <typename T>
-const indPair *find_pending_pair(const T &loser, int target)
-{
-    for (size_t i = 0; i < loser.size(); i++)
-    {
-        if (loser[i].get_pair_index() == target)
-            return &loser[i];
-    }
-    return NULL;
-}
 
 std::vector<int> jacobsthal_order(int n)
 {
@@ -109,6 +91,14 @@ std::vector<int> jacobsthal_order(int n)
     }
     return order;    
 }
+
+struct ComparePairs {
+    bool operator()(const pairs* a, const pairs* b) const {
+        //comp++;
+        return a->valeur < b->valeur;
+    }
+};
+
 
 template <typename T>
 T splitPairs(T& pairsChain, int& single) {
@@ -239,7 +229,7 @@ void PmergeMe::fordJohnsonPair(std::vector<int>& v) {
         pairsChain.push_back(&pool[i]);
 
     fordJohnsonSort(pairsChain);
-    //최종 정렬된 vector<int> 생성
+
     v.clear();
     for (size_t i = 0; i < pairsChain.size(); ++i) {
         v.push_back(pairsChain[i]->valeur);

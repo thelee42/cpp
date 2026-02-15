@@ -21,7 +21,6 @@ PmergeMe::PmergeMe(char **sequence)
     }
 }
 
-
 PmergeMe::PmergeMe(const PmergeMe& other) {
     vec = other.vec;
     deq = other.deq;
@@ -36,8 +35,6 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other)
     }
     return *this;
 }
-
-
 
 void PmergeMe::printVec() const
 {
@@ -67,17 +64,6 @@ void PmergeMe::printDeq() const
     std::cout << std::endl;
 }
 
-template <typename T>
-const indPair *find_pending_element(const T &loser, int target)
-{
-    for (size_t i = 0; i < loser.size(); i++)
-    {
-        if (loser[i].get_pair_index() == target)
-            return &loser[i];
-    }
-    return NULL;
-}
-
 std::vector<int> jacobsthal_order(int n)
 {
     std::vector<int> order;
@@ -104,6 +90,16 @@ std::vector<int> jacobsthal_order(int n)
     return order;    
 }
 
+template <typename T>
+const indPair *find_pending_pair(const T &loser, int target)
+{
+    for (size_t i = 0; i < loser.size(); i++)
+    {
+        if (loser[i].get_pair_index() == target)
+            return &loser[i];
+    }
+    return NULL;
+}
 
 template <typename T>
 void splitPairs(T& pairs, T& winners, T& losers) {
@@ -127,7 +123,7 @@ void splitPairs(T& pairs, T& winners, T& losers) {
 std::vector<indPair> initMainchain(const std::vector<indPair>& winners, const std::vector<indPair>& losers) {
     std::vector<indPair> mainChain;
     int b1PairIndex = winners[0].get_pair_index();
-    const indPair *b1 = find_pending_element(losers, b1PairIndex);
+    const indPair *b1 = find_pending_pair(losers, b1PairIndex);
     mainChain.push_back(*b1);
 
     for (size_t i = 0; i < winners.size(); i++)
@@ -148,7 +144,7 @@ void insertPending(std::vector<indPair>& mainChain, std::vector<indPair>& losers
         if (pendingInd < (int)winners.size())
         {
             int pairIndex = winners[pendingInd].get_pair_index();
-            pending = find_pending_element(losers, pairIndex);
+            pending = find_pending_pair(losers, pairIndex);
             for (std::vector<indPair>::iterator it = mainChain.begin(); it != mainChain.end(); ++it) {
                 if (it->get_pair_index() == pairIndex) {
                     searchEnd = it;
@@ -170,14 +166,14 @@ void insertPending(std::deque<indPair>& mainChain, std::deque<indPair>& losers, 
         std::deque<indPair>::iterator searchEnd = mainChain.end();
         if (pendingInd == 0)
         {
-            pending = find_pending_element(losers, winners[0].get_pair_index());
+            pending = find_pending_pair(losers, winners[0].get_pair_index());
             mainChain.push_front(*pending);
             continue;
         }
         if (pendingInd < (int)winners.size())
         {
             int pairIndex = winners[pendingInd].get_pair_index();
-            pending = find_pending_element(losers, pairIndex);
+            pending = find_pending_pair(losers, pairIndex);
             for (std::deque<indPair>::iterator it = mainChain.begin(); it != mainChain.end(); ++it) {
                 if (it->get_pair_index() == pairIndex) {
                     searchEnd = it;
