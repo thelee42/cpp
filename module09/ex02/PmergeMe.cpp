@@ -104,17 +104,12 @@ std::vector<int> jacobsthal_order(int n)
     return order;    
 }
 
-void fordJohnsonSort(std::vector<indPair>& pairs) {
 
-    int n = pairs.size();
-    if (n < 2) 
-        return;
-
-    std::vector<indPair> winners;
-    std::vector<indPair> losers;
+template <typename T>
+void splitPairs(T& pairs, T& winners, T& losers) {
     int pairInd = 0;
-    for (int i = 0; i + 1 < n; i += 2) {
-        if (pairs[i].value > pairs[i+1].value)
+    for (size_t i = 0; i + 1 < pairs.size(); i += 2) {
+        if (pairs[i + 1] < pairs[i])
             std::swap(pairs[i], pairs[i+1]);
         pairs[i].pair_index.push_back(pairInd);
         pairs[i + 1].pair_index.push_back(pairInd);
@@ -122,19 +117,26 @@ void fordJohnsonSort(std::vector<indPair>& pairs) {
         winners.push_back(indPair(pairs[i + 1]));
         pairInd++;
     }
-    if (n % 2 == 1) {
+    if (pairs.size() % 2 == 1) {
         pairs.back().pair_index.push_back(pairInd);
         losers.push_back(indPair(pairs.back()));
     }
-    fordJohnsonSort(winners);
-    std::vector<indPair> mainChain;
+}
 
+
+std::vector<indPair> initMainchain(const std::vector<indPair>& winners, const std::vector<indPair>& losers) {
+    std::vector<indPair> mainChain;
     int b1PairIndex = winners[0].get_pair_index();
     const indPair *b1 = find_pending_element(losers, b1PairIndex);
     mainChain.push_back(*b1);
+
     for (size_t i = 0; i < winners.size(); i++)
         mainChain.push_back(winners[i]);
+    return mainChain;
+}
 
+
+void insertPending(std::vector<indPair>& mainChain, std::vector<indPair>& losers, std::vector<indPair>& winners) {
     std::vector<int> order = jacobsthal_order(losers.size());
     for (size_t i = 0; i < order.size(); i++)
     {
@@ -157,42 +159,9 @@ void fordJohnsonSort(std::vector<indPair>& pairs) {
         std::vector<indPair>::iterator insert_pos = std::lower_bound(mainChain.begin(), searchEnd, *pending);
         mainChain.insert(insert_pos, *pending);
     }
-    for (size_t i = 0; i < mainChain.size(); i++) {
-        if (!mainChain[i].pair_index.empty())
-            mainChain[i].pair_index.pop_back();
-    }
-    pairs = mainChain;
 }
 
-void fordJohnsonSort(std::deque<indPair>& pairs) {
-
-    int n = pairs.size();
-    if (n < 2) 
-        return;
-
-    std::deque<indPair> winners;
-    std::deque<indPair> losers;
-    int pairInd = 0;
-    for (int i = 0; i + 1 < n; i += 2) {
-        if (pairs[i].value > pairs[i+1].value)
-            std::swap(pairs[i], pairs[i+1]);
-        pairs[i].pair_index.push_back(pairInd);
-        pairs[i + 1].pair_index.push_back(pairInd);
-        losers.push_back(indPair(pairs[i]));
-        winners.push_back(indPair(pairs[i + 1]));
-        pairInd++;
-    }
-    if (n % 2 == 1) {
-        pairs.back().pair_index.push_back(pairInd);
-        losers.push_back(indPair(pairs.back()));
-    }
-    fordJohnsonSort(winners);
-    std::deque<indPair> mainChain;
-
-
-    for (size_t i = 0; i < winners.size(); i++)
-        mainChain.push_back(winners[i]);
-
+void insertPending(std::deque<indPair>& mainChain, std::deque<indPair>& losers, std::deque<indPair>& winners) {
     std::vector<int> order = jacobsthal_order(losers.size());
     for (size_t i = 0; i < order.size(); i++)
     {
@@ -219,12 +188,56 @@ void fordJohnsonSort(std::deque<indPair>& pairs) {
         std::deque<indPair>::iterator insert_pos = std::lower_bound(mainChain.begin(), searchEnd, *pending);
         mainChain.insert(insert_pos, *pending);
     }
+}
+
+void fordJohnsonSort(std::vector<indPair>& pairs) {
+
+    int n = pairs.size();
+    if (n < 2) 
+        return;
+
+    std::vector<indPair> winners;
+    std::vector<indPair> losers;
+    splitPairs(pairs, winners, losers);
+
+    fordJohnsonSort(winners);
+
+    std::vector<indPair> mainChain = initMainchain(winners, losers);
+
+    insertPending(mainChain, losers, winners);
+
     for (size_t i = 0; i < mainChain.size(); i++) {
         if (!mainChain[i].pair_index.empty())
             mainChain[i].pair_index.pop_back();
     }
     pairs = mainChain;
 }
+
+void fordJohnsonSort(std::deque<indPair>& pairs) {
+
+    int n = pairs.size();
+    if (n < 2) 
+        return;
+
+    std::deque<indPair> winners;
+    std::deque<indPair> losers;
+    splitPairs(pairs, winners, losers);
+
+    fordJohnsonSort(winners);
+
+    std::deque<indPair> mainChain;
+    for (size_t i = 0; i < winners.size(); i++)
+        mainChain.push_back(winners[i]);
+
+    insertPending(mainChain, losers, winners);
+
+    for (size_t i = 0; i < mainChain.size(); i++) {
+        if (!mainChain[i].pair_index.empty())
+            mainChain[i].pair_index.pop_back();
+    }
+    pairs = mainChain;
+}
+
 
 void PmergeMe::fordJohnsonPair(std::vector<int>& v) {
     std::vector<indPair> pairs;

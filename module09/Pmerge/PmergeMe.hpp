@@ -8,17 +8,20 @@
 #include <cstdlib>
 #include <cstring>
 
-struct element
+//extern int comp;
+
+struct pairs
 {
     int valeur;
-    std::vector<element*> loser;
+    std::vector<pairs*> loser;
 
-    element(int v) : valeur(v){}
-    ~element() {}
-    void add_loser(element *l) {
+    pairs(int v) : valeur(v){}
+    ~pairs() {}
+    void add_loser(pairs *l) {
         loser.push_back(l);
     }
-    bool operator<(const element &other) const {
+    bool operator<(const pairs &other) const {
+        //comp++;
         return valeur < other.valeur;
     }
 };

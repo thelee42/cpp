@@ -2,6 +2,8 @@
 #include    <iostream>
 #include    <ctime>
 
+//int comp = 0;
+
 int main(int ac, char** av)
 {
     if (ac < 2)
@@ -22,6 +24,8 @@ int main(int ac, char** av)
         clock_t start_vec = clock();
         sort.fordJohnsonPair(sort.vec);
         clock_t end_vec = clock();
+
+        //std::cout << "Number of comparisons: " << comp << std::endl;
 
         clock_t start_deq = clock();
         sort.fordJohnsonPair(sort.deq);

@@ -8,15 +8,19 @@
 #include <cstdlib>
 #include <cstring>
 
+//extern int comp;
+
 struct indPair
 {
     int value;
     std::vector<int> pair_index;
+    
     indPair(int v) : value(v) {}
     indPair(int v, int p_ind) : value(v) {
         pair_index.push_back(p_ind);
     }
     bool operator<(const indPair &other) const {
+        //comp++;
         return value < other.value;
     }
     int get_pair_index() const {
@@ -44,37 +48,3 @@ class PmergeMe
 };
 
 #endif
-
-// 1. division + pair
-// 2. 
-
-
-
-/*
-
-- size()
-- empty()
-- max_size()
-
-- operator[]
-- at()
-- front()
-- back()
-
-- begin()
-- end()
-- rbegin()
-- rend()
-
-- push_back()
-- pop_back()
-- insert()
-- erase()
-- clear()
-- swap()
-
-**only deque**
-- push_front()
-- pop_front()
-
-*/
