@@ -1,6 +1,6 @@
 #include    "PmergeMe.hpp"
 #include    <iostream>
-#include    <ctime>
+#include    <sys/time.h>
 
 int comp = 0;
 
@@ -21,18 +21,19 @@ int main(int ac, char** av)
         }
         std::cout << std::endl;
 
-        clock_t start_vec = clock();
+        struct timeval start_vec, end_vec, start_deq, end_deq;
+        gettimeofday(&start_vec, NULL);
         sort.fordJohnsonPair(sort.vec);
-        clock_t end_vec = clock();
+        gettimeofday(&end_vec, NULL);
 
         //std::cout << "Number of comparisons: " << comp << std::endl;
 
-        clock_t start_deq = clock();
+        gettimeofday(&start_deq, NULL);
         sort.fordJohnsonPair(sort.deq);
-        clock_t end_deq = clock();
+        gettimeofday(&end_deq, NULL);
 
-        double time_vec = static_cast<double>(end_vec - start_vec) * 1000000.0 / CLOCKS_PER_SEC;
-        double time_deq = static_cast<double>(end_deq - start_deq) * 1000000.0 / CLOCKS_PER_SEC;
+        long time_vec = (end_vec.tv_sec - start_vec.tv_sec) * 1000000L + (end_vec.tv_usec - start_vec.tv_usec);
+        long time_deq = (end_deq.tv_sec - start_deq.tv_sec) * 1000000L + (end_deq.tv_usec - start_deq.tv_usec);
         std::cout << "    <After>" << std::endl;
         sort.printVec();
         sort.printDeq();
